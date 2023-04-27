@@ -21,6 +21,10 @@
     }
   };
 
+  const classNames = {
+    favorite: 'favorite',
+}
+
   const templates = {
     bookList: 
       Handlebars.compile(document.querySelector(select.templateOf.books).innerHTML)
@@ -33,7 +37,6 @@
   // 3. Render books
 
   function render () {
-
     for (bookData in data.books) {
       // Finding single book
       const bookObject = data.books[bookData];
@@ -45,8 +48,26 @@
       const bookListContainer = document.querySelector(select.containerOf.booksList);
       bookListContainer.appendChild(domElement)
     }
+  }
 
+  // 2. Add book to favourite
+
+  const favoriteBooks = []
+
+  function initActions() {
+    const images = document.querySelectorAll('.book__image');
+    for (const image of images) {
+      image.addEventListener('dblclick', function(event){
+        event.preventDefault();
+        image.classList.add(classNames.favorite)
+        const bookId = event.target.parentElement.parentElement.getAttribute('data-id');
+        favoriteBooks.push(bookId);
+      })
+    }
   }
 
   render()
+  initActions()
+
+
 }
