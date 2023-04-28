@@ -33,46 +33,41 @@
   // 2. Get access to data file
 
   const data = dataSource
+  let favoriteBooks = []
 
   // 3. Render books
 
   function render () {
     for (bookData in data.books) {
-      // Finding single book
       const bookObject = data.books[bookData];
-      // Generating HTML
       const generatedHTML = templates.bookList(bookObject)
-      // Creating DOM element (with external function)
       const domElement = utils.createDOMFromHTML(generatedHTML)
-      // Adding DOM element to list
       const bookListContainer = document.querySelector(select.containerOf.booksList);
       bookListContainer.appendChild(domElement)
     }
   }
 
-  // 2. Add book to favourite
-
-  let favoriteBooks = []
+  // 4. Add / remove book from [] favourite 
 
   function initActions() {
 
-    const images = document.querySelectorAll('.book__image');
-    
-    for (const image of images) {
-      image.addEventListener('dblclick', function(event){
-        event.preventDefault();
-        image.classList.add(classNames.favorite)
-        const bookId = event.target.parentElement.parentElement.getAttribute('data-id');
+    const booksList = document.querySelector(select.containerOf.booksList)
 
-        if(!favoriteBooks.includes(bookId)){
-          image.classList.add(classNames.favorite)
-          favoriteBooks.push(bookId);
-        } else if(favoriteBooks.includes(bookId)) {
-          image.classList.remove(classNames.favorite)
-          favoriteBooks = favoriteBooks.filter(x => x !== bookId)
-        }
-      })
-    }
+    booksList.addEventListener('dblclick', function(event){
+      event.preventDefault();
+
+      const clickedElement = event.target.offsetParent
+      const bookId = clickedElement.getAttribute('data-id')
+
+      if(!favoriteBooks.includes(bookId)){
+        clickedElement.classList.add(classNames.favorite)
+        favoriteBooks.push(bookId);
+      } else if(favoriteBooks.includes(bookId)) {
+        clickedElement.classList.remove(classNames.favorite)
+        favoriteBooks = favoriteBooks.filter(x => x !== bookId)
+      }
+    })
+    
 
 
   }
