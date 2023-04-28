@@ -52,19 +52,32 @@
 
   // 2. Add book to favourite
 
-  const favoriteBooks = []
+  let favoriteBooks = []
 
   function initActions() {
+
     const images = document.querySelectorAll('.book__image');
+    
     for (const image of images) {
       image.addEventListener('dblclick', function(event){
         event.preventDefault();
         image.classList.add(classNames.favorite)
         const bookId = event.target.parentElement.parentElement.getAttribute('data-id');
-        favoriteBooks.push(bookId);
+
+        if(!favoriteBooks.includes(bookId)){
+          image.classList.add(classNames.favorite)
+          favoriteBooks.push(bookId);
+        } else if(favoriteBooks.includes(bookId)) {
+          image.classList.remove(classNames.favorite)
+          favoriteBooks = favoriteBooks.filter(x => x !== bookId)
+        }
       })
     }
+
+
   }
+
+
 
   render()
   initActions()
